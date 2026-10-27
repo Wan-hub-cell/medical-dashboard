@@ -1,0 +1,44 @@
+﻿@charset "utf-8";
+*{ -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box}
+*,body{padding:0px; margin:0px; color: #fff; font-family: "微软雅黑";}
+@font-face{font-family:electronicFont;src:url(../font/DS-DIGIT.TTF)}
+
+/* 恢复原版的高度自适应 */
+html { height: 100%; }
+body{ height: 100%; background: #03081a !important; font-size: .1rem; overflow: hidden; }
+
+li{ list-style-type:none;}
+img{ border:none; max-width: 100%;}
+ol,ul,p,h1,h2,h3,h4,h5,h6{ padding:0; margin:0}
+.clearfix:after, .clearfix:before { display: table; content: " "}
+.clearfix:after { clear: both}
+.pulll_left{float:left;}
+.pulll_right{float:right;}
+
+/* 头部 */
+.head{ height: 1.05rem; background: transparent !important; border-bottom: 1px solid rgba(0, 242, 255, 0.2); position: relative; z-index: 100;}
+.head h1{ color: #00f2ff; text-align: center; font-size: .45rem; line-height: .8rem; letter-spacing: 3px; text-shadow: 0 0 10px rgba(0, 242, 255, 0.6);}
+.weather{ position:absolute; right:.3rem; top:0; line-height: .75rem;}
+.weather span{color: rgba(0, 242, 255, 0.7); font-size: .18rem;}
+
+/* 核心布局：恢复三列 30:40:30 的设定 */
+.mainbox{ padding:.1rem .1rem 0rem .1rem; height: calc(100% - 1.05rem);}
+.mainbox>ul{ width: 100%; height: 100%; }
+.mainbox>ul>li{ float: left; padding: 0 .1rem; height: 100%; }
+.mainbox>ul>li:nth-child(1) { width: 30%; } /* 左 */
+.mainbox>ul>li:nth-child(2) { width: 40%; padding: 0; } /* 中 */
+.mainbox>ul>li:nth-child(3) { width: 30%; } /* 右 */
+
+/* 保证 Echarts 容器绝对能拿到高度，这样才不会全黑 */
+.allnav{ height: calc(100% - 35px) !important; width: 100%; }
+
+/* 面板框 */
+.boxall{ border: 1px solid rgba(0, 242, 255, 0.15) !important; padding: 0 .15rem .15rem .15rem; background: rgba(4, 12, 30, 0.7) !important; box-shadow: inset 0 0 20px rgba(0, 242, 255, 0.05); border-radius: 6px; position: relative; z-index: 10;}
+.boxall:before, .boxall:after, .boxfoot:before, .boxfoot:after { display: none !important; }
+.alltitle{ font-size: .18rem; color: #00f2ff; line-height: .45rem; border-bottom: 1px dashed rgba(0, 242, 255, 0.2); margin-bottom: 5px; text-shadow: 0 0 5px rgba(0, 242, 255, 0.5); }
+
+/* 中间大数字看板：彻底修复重叠 */
+.bar{ background: rgba(0, 242, 255, 0.03); padding: .15rem; border: 1px solid rgba(0, 242, 255, 0.15); border-radius: 6px; height: 1.5rem; margin-bottom: 0.15rem;}
+.barbox{ position: relative; height: 50%;}
+.barbox li{ float: left; width: 50%; font-size: 0.65rem; color: #00f2ff !important; font-family: electronicFont; font-weight: bold; text-shadow: 0 0 15px rgba(0, 242, 255, 0.6); text-align: center; line-height: 0.7rem;}
+.barbox2 li{ float: left; width: 50%; font-size: 0.18rem; color: rgba(255,255,255,.8) !important; text-align: center; line-height: 0.3rem;}

@@ -1,0 +1,230 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>智慧医院医疗运营数据实时监控平台</title>
+    <script type="text/javascript" src="../static/js/jquery.js"></script>
+    <link rel="stylesheet" href="../static/css/comon0.css">
+</head>
+<script>
+	$(window).load(function(){  
+             $(".loading").fadeOut()
+            })  
+$(document).ready(function(){
+	var whei=$(window).width()
+	$("html").css({fontSize:whei/20})
+	$(window).resize(function(){
+		var whei=$(window).width()
+	 $("html").css({fontSize:whei/20})
+});
+});
+</script>
+<script type="text/javascript" src="../static/js/echarts.min.js"></script>
+
+<body>
+<div class="head">
+    <h1>{{title}}</h1>
+    <div class="weather"><span id="showTime"></span></div>
+    <script>
+        var t = null;
+        t = setTimeout(time,1000);
+        function time() {
+           clearTimeout(t);
+           dt = new Date();
+           var y=dt.getFullYear(), mt=dt.getMonth()+1, day=dt.getDate();
+           var h=dt.getHours(), m=dt.getMinutes(), s=dt.getSeconds();
+           document.getElementById("showTime").innerHTML = y+"年"+mt+"月"+day+"日-"+h+"时"+m+"分"+s+"秒";
+           t = setTimeout(time,1000);     
+        } 
+    </script>
+</div>
+
+<div class="mainbox">
+    <ul class="clearfix">
+        <!-- 左侧 -->
+        <li class="col-left">
+            <div class="boxall" style="height: 3.2rem">
+                <div class="alltitle">核心科室门诊接诊量</div>
+                <div class="allnav" id="echart1"></div>
+            </div>
+            <div class="boxall" style="height: 3.2rem">
+                <div class="alltitle">患者年龄段分布</div>
+                <div class="allnav" id="echart2"></div>
+            </div>
+            <div class="boxall" style="height: 2.8rem">
+                <div class="alltitle">医保类型占比</div>
+                <div class="allnav" id="fb1"></div>
+            </div>
+        </li>
+
+        <!-- 中间 -->
+        <li class="col-center">
+            <div class="bar" style="height: 1.4rem; margin-bottom: 0.15rem;">
+                <div class="barbox">
+                    <ul class="clearfix">
+                        <li class="pulll_left counter">{{form.counter.value}}</li>
+                        <li class="pulll_left counter">{{form.counter2.value}}</li>
+                    </ul>
+                </div>
+                <div class="barbox2">
+                    <ul class="clearfix">
+                        <li class="pulll_left">{{form.counter.name}}</li>
+                        <li class="pulll_left">{{form.counter2.name}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="boxall" style="height: 7.0rem;">
+                <div class="alltitle">全天候接诊量趋势监控</div>
+                <div class="allnav" id="echart4"></div>
+            </div>
+        </li>
+
+        <!-- 右侧 -->
+        <li class="col-right">
+            <div class="boxall" style="height: 3.2rem">
+                <div class="alltitle">重点科室月度业务收入</div>
+                <div class="allnav" id="echart5"></div>
+            </div>
+            <div class="boxall" style="height: 3.2rem">
+                <div class="alltitle">院区床位使用率监控</div>
+                <div class="allnav" id="echart6"></div>
+            </div>
+            <div class="boxall" style="height: 2.8rem">
+                <div class="alltitle">医疗质控实时预警</div>
+                <div class="allnav" style="padding: 10px 20px; color: #fff; font-size: 14px;">
+                    <p style="color: #00e676; margin-bottom: 10px;">● 手术室 3 号间正常运作中</p>
+                    <p style="color: #00e676; margin-bottom: 10px;">● 药品库存充足，冷链温度 2-8℃</p>
+                    <p style="color: #ff4d4f;">● 急诊科当前排队人数：12 人（拥堵）</p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!-- 图表初始化代码 -->
+<script>
+$(function echarts_1() {
+    var myChart = echarts.init(document.getElementById('echart1'));
+    option = {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '0%', top:'10px', right: '0%', bottom: '4%', containLabel: true },
+        xAxis: [{ type: 'category', data: {{form.echart1.xAxis|safe}}, axisLabel: { color: "rgba(255,255,255,.6)", fontSize: '12' }, axisLine: { lineStyle: { color: "rgba(255,255,255,.1)" } } }],
+        yAxis: [{ type: 'value', axisLabel: { color: "rgba(255,255,255,.6)", fontSize: '12' }, splitLine: { lineStyle: { color: "rgba(255,255,255,.1)" } } }],
+        series: [{ type: 'bar', data: {{form.echart1.series|safe}}, barWidth:'35%', itemStyle: { normal: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{offset: 0, color: '#00f2ff'}, {offset: 1, color: 'rgba(0, 242, 255, 0.1)'}]), barBorderRadius: 5 } } }]
+    };
+    myChart.setOption(option);
+    window.addEventListener("resize",function(){ myChart.resize(); });
+})
+
+$(function echarts_2() {
+    var myChart = echarts.init(document.getElementById('echart2'));
+    option = {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '0%', top:'10px', right: '0%', bottom: '4%', containLabel: true },
+        xAxis: [{ type: 'category', data: {{form.echart2.xAxis|safe}}, axisLabel: { color: "rgba(255,255,255,.6)", fontSize: '12' }, axisLine: { lineStyle: { color: "rgba(255,255,255,.1)" } } }],
+        yAxis: [{ type: 'value', axisLabel: { color: "rgba(255,255,255,.6)", fontSize: '12' }, splitLine: { lineStyle: { color: "rgba(255,255,255,.1)" } } }],
+        series: [{ type: 'bar', data: {{form.echart2.series|safe}}, barWidth:'35%', itemStyle: { normal: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{offset: 0, color: '#00e676'}, {offset: 1, color: 'rgba(0, 230, 118, 0.1)'}]), barBorderRadius: 5 } } }]
+    };
+    myChart.setOption(option);
+    window.addEventListener("resize",function(){ myChart.resize(); });
+})
+
+$(function echarts_31() {
+    var myChart = echarts.init(document.getElementById('fb1'));
+    option = {
+        title: { text: '{{form.echarts3_1.title}}', left: 'center', textStyle: { color: '#fff', fontSize:'14' }, top: '5%' },
+        tooltip: { trigger: 'item', formatter: "{b}: {c} ({d}%)" },
+        legend: { top:'75%', itemWidth: 10, itemHeight: 10, data:{{form.echarts3_1.xAxis|safe}}, textStyle: { color: 'rgba(255,255,255,.5)', fontSize:'12' } },
+        series: [{ name:'{{form.echarts3_1.title}}', type:'pie', center: ['50%', '45%'], radius: ['40%', '60%'], color: ['#00f2ff', '#00e676', '#ff4d4f', '#ffeb3b'], label: {show:false}, labelLine: {show:false}, data:{{form.echarts3_1.data|safe}} }]
+    };
+    myChart.setOption(option);
+    window.addEventListener("resize",function(){ myChart.resize(); });
+})
+
+$(function echarts_4() {
+    var myChart = echarts.init(document.getElementById('echart4'));
+    option = {
+        tooltip: { trigger: 'axis' },
+        legend: { top:'0%', data:{{form.echart4.names|safe}}, textStyle: { color: 'rgba(255,255,255,.5)', fontSize:'12' } },
+        grid: { left: '3%', top: '40px', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: [{ type: 'category', boundaryGap: false, data: {{form.echart4.xAxis|safe}}, axisLabel: { color: "rgba(255,255,255,.6)" }, axisLine: { lineStyle: { color: 'rgba(255,255,255,.2)' } } }],
+        yAxis: [{ type: 'value', axisLabel: { color: "rgba(255,255,255,.6)" }, splitLine: { lineStyle: { color: 'rgba(255,255,255,.1)' } } }],
+        series: [
+            { name: '{{form.echart4.data[0].name}}', data: {{form.echart4.data[0].value|safe}}, type: 'line', smooth: true, symbol: 'none', lineStyle: { color: '#00f2ff', width: 3 }, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{offset: 0, color: 'rgba(0, 242, 255, 0.4)'}, {offset: 1, color: 'rgba(0, 242, 255, 0)'}]) } },
+            { name: '{{form.echart4.data[1].name}}', data: {{form.echart4.data[1].value|safe}}, type: 'line', smooth: true, symbol: 'none', lineStyle: { color: '#ff4d4f', width: 3 }, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{offset: 0, color: 'rgba(255, 77, 79, 0.4)'}, {offset: 1, color: 'rgba(255, 77, 79, 0)'}]) } }
+        ]
+    };
+    myChart.setOption(option);
+    window.addEventListener("resize",function(){ myChart.resize(); });
+})
+
+$(function echarts_5() {
+    var myChart = echarts.init(document.getElementById('echart5'));
+    option = {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '0%', top:'10px', right: '0%', bottom: '4%', containLabel: true },
+        xAxis: [{ type: 'category', data: {{form.echart5.xAxis|safe}}, axisLabel: { interval: 0, color: "rgba(255,255,255,.6)", fontSize: '11' }, axisLine: { lineStyle: { color: "rgba(255,255,255,.1)" } } }],
+        yAxis: [{ type: 'value', axisLabel: { color: "rgba(255,255,255,.6)" }, splitLine: { lineStyle: { color: "rgba(255,255,255,.1)" } } }],
+        series: [{ type: 'bar', data: {{form.echart5.series|safe}}, barWidth:'35%', itemStyle: { normal: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{offset: 0, color: '#00f2ff'}, {offset: 1, color: 'rgba(0, 242, 255, 0.1)'}]), barBorderRadius: 5 } } }]
+    };
+    myChart.setOption(option);
+    window.addEventListener("resize",function(){ myChart.resize(); });
+})
+
+$(function echarts_6() {
+    var myChart = echarts.init(document.getElementById('echart6'));
+    var dataStyle = { normal: { label: { show: false }, labelLine: { show: false } } };
+    var placeHolderStyle = { normal: { color: 'rgba(255,255,255,.05)', label: { show: false }, labelLine: { show: false } }, emphasis: { color: 'rgba(0,0,0,0)' } };
+    option = {
+        color: ['#00f2ff', '#00e676', '#ff4d4f', '#ffeb3b', '#9c27b0'],
+        tooltip: { show: true, formatter: "{a} : {c}%" },
+        legend: { itemWidth: 10, itemHeight: 10, itemGap: 12, bottom: '0%', data: {{form.echart6.xAxis|safe}}, textStyle: { color: 'rgba(255,255,255,.6)' } },
+        series: [
+            {% for item in form.echart6.data %}
+            { name: '{{item.name|safe}}', type: 'pie', clockWise: false, center: ['50%', '45%'], radius: {{item.radius|safe}}, itemStyle: dataStyle, hoverAnimation: false,
+              data: [ { value: {{item.value}}, name: '{{item.color}}' }, { value: {{item.value2}}, name: 'invisible', tooltip: {show: false}, itemStyle: placeHolderStyle } ] },
+            {% endfor %}
+        ]
+    };
+    myChart.setOption(option);
+    window.addEventListener("resize",function(){ myChart.resize(); });
+})
+</script>
+
+<!-- 实时刷新数据 -->
+<script>
+function getChartInstance(id) { var dom = document.getElementById(id); return dom ? (echarts.getInstanceByDom(dom) || echarts.init(dom)) : null; }
+function animateCounter(el, toVal, duration) {
+    var to = Number(toVal); if (isNaN(to)) return;
+    var from = parseInt(el.textContent, 10); if (isNaN(from)) from = to;
+    if (from === to) return; var start = null;
+    function tick(now) { if (start == null) start = now; var progress = Math.min((now - start) / duration, 1); el.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - progress, 3))); if (progress < 1) requestAnimationFrame(tick); }
+    requestAnimationFrame(tick);
+}
+function updateCharts(data) {
+    if (data.counter && data.counter2) {
+        var counters = document.querySelectorAll('.counter');
+        if (counters.length >= 2) { animateCounter(counters[0], data.counter.value, 450); animateCounter(counters[1], data.counter2.value, 450); }
+        var counterNames = document.querySelectorAll('.barbox2 .pulll_left');
+        if (counterNames.length >= 2) { counterNames[0].textContent = data.counter.name; counterNames[1].textContent = data.counter2.name; }
+    }
+    if (data.echart1) { var c1 = getChartInstance('echart1'); if(c1){ var o=c1.getOption(); o.xAxis[0].data=data.echart1.xAxis; o.series[0].data=data.echart1.series; c1.setOption(o,true);} }
+    if (data.echart2) { var c2 = getChartInstance('echart2'); if(c2){ var o=c2.getOption(); o.xAxis[0].data=data.echart2.xAxis; o.series[0].data=data.echart2.series; c2.setOption(o,true);} }
+    if (data.echart4) { var c4 = getChartInstance('echart4'); if(c4){ var o=c4.getOption(); o.xAxis[0].data=data.echart4.xAxis; o.series[0].data=data.echart4.data[0].value; o.series[1].data=data.echart4.data[1].value; c4.setOption(o,true);} }
+    if (data.echart5) { var c5 = getChartInstance('echart5'); if(c5){ var o=c5.getOption(); o.xAxis[0].data=data.echart5.xAxis; o.series[0].data=data.echart5.series; c5.setOption(o,true);} }
+    if (data.echarts3_1) { var c3 = getChartInstance('fb1'); if(c3){ var o=c3.getOption(); o.legend[0].data=data.echarts3_1.xAxis; o.series[0].data=data.echarts3_1.data; c3.setOption(o,true);} }
+    if (data.echart6) { 
+        var c6 = getChartInstance('echart6'); 
+        if(c6){ var o=c6.getOption(); o.legend[0].data=data.echart6.xAxis; 
+            for(var i=0; i<data.echart6.data.length; i++){ o.series[i].data[0].value = data.echart6.data[i].value; o.series[i].data[1].value = data.echart6.data[i].value2; }
+            c6.setOption(o,true); 
+        } 
+    }
+}
+function refreshData() {
+    $.ajax({ url: '/api/data', type: 'GET', dataType: 'json', success: function(data) { updateCharts(data); } });
+}
+$(document).ready(function() { setInterval(refreshData, 3000); });
+</script>
+</body>
+</html>
